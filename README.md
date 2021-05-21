@@ -13,11 +13,18 @@
 
 ## Providers
 
-No provider.
+| Name | Version |
+|------|---------|
+| aws | n/a |
 
 ## Inputs
 
-No input.
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| sagemaker\_domain\_auth\_mode | Authentication Mode for Sagemaker Studio Domain. Valid values are IAM and SSO | `string` | `"IAM"` | no |
+| sagemaker\_domain\_name | Name for Sagemaker Studio Domain | `any` | n/a | yes |
+| sagemaker\_domain\_subnet\_ids | The VPC subnets that Studio uses for communication | `list(string)` | n/a | yes |
+| sagemaker\_domain\_vpc\_id | The ID of the Amazon Virtual Private Cloud (VPC) that Studio uses for communication. | `any` | n/a | yes |
 
 ## Outputs
 
