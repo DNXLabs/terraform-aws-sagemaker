@@ -31,4 +31,4 @@ Module managed by [DNX Solutions](https://github.com/DNXLabs).
 
 ## License
 
-Apache 2 Licensed. See [LICENSE](https://github.com/DNXLabs/terraform-aws-template/blob/master/LICENSE) for full details.
+Apache 2 Licensed. See [LICENSE](https://github.com/DNXLabs/terraform-aws-sagemaker/blob/master/LICENSE) for full details.
