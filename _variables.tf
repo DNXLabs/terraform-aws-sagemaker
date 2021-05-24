@@ -1,5 +1,5 @@
 variable "sagemaker_domain_name" {
-      description = "Name for Sagemaker Studio Domain"
+  description = "Name for Sagemaker Studio Domain"
 }
 
 variable "sagemaker_domain_auth_mode" {
@@ -11,7 +11,7 @@ variable "sagemaker_domain_vpc_id" {
   description = "The ID of the Amazon Virtual Private Cloud (VPC) that Studio uses for communication."
 }
 
-variable "sagemaker_domain_subnet_ids"{
-    type = list(string)
-    description = "The VPC subnets that Studio uses for communication"
+variable "sagemaker_domain_subnet_ids" {
+  type        = list(string)
+  description = "The VPC subnets that Studio uses for communication"
 }
