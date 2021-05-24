@@ -1,58 +1,54 @@
-data "aws_vpc" "selected" {
-  id = var.sagemaker_domain_vpc_id
-}
-
 resource "aws_vpc_endpoint" "sagemaker_api" {
-  vpc_id            = var.vpc_id
+  vpc_id            = var.sagemaker_domain_vpc_id
   service_name      = "com.amazonaws.${data.aws_region.current.name}.sagemaker.api"
   vpc_endpoint_type = "Interface"
 
   security_group_ids = [
-    aws_security_group.ptfe_service.id,
+    aws_security_group.vpcendpoint.id,
   ]
 
-  subnet_ids          = [var.subnet_ids]
+  subnet_ids          = var.sagemaker_domain_subnet_ids
   private_dns_enabled = true
 }
 
 resource "aws_vpc_endpoint" "sagemaker_runtime" {
-  vpc_id            = var.vpc_id
+  vpc_id            = var.sagemaker_domain_vpc_id
   service_name      = "com.amazonaws.${data.aws_region.current.name}.sagemaker.runtime"
   vpc_endpoint_type = "Interface"
 
   security_group_ids = [
-    aws_security_group.ptfe_service.id,
+    aws_security_group.vpcendpoint.id,
   ]
 
-  subnet_ids          = [var.subnet_ids]
+  subnet_ids          = var.sagemaker_domain_subnet_ids
   private_dns_enabled = true
 }
 
 resource "aws_vpc_endpoint" "cloudwatch_logs" {
-  vpc_id            = var.vpc_id
+  vpc_id            = var.sagemaker_domain_vpc_id
   service_name      = "com.amazonaws.${data.aws_region.current.name}.logs"
   vpc_endpoint_type = "Interface"
 
   security_group_ids = [
-    aws_security_group.ptfe_service.id,
+    aws_security_group.vpcendpoint.id,
   ]
 
-  subnet_ids          = [var.subnet_ids]
+  subnet_ids          = var.sagemaker_domain_subnet_ids
   private_dns_enabled = true
 }
 
 resource "aws_vpc_endpoint" "s3" {
-  vpc_id       = var.vpc_id
+  vpc_id       = var.sagemaker_domain_vpc_id
   service_name = "com.amazonaws.${data.aws_region.current.name}.s3"
 }
 
 resource "aws_security_group" "vpcendpoint" {
-  name        = "vpcendpoint-${var.name}-sg"
+  name        = "vpcendpoint-${var.sagemaker_domain_name}-sg"
   description = "SG for VPC Endpoints from Sagemaker Studio"
-  vpc_id      = var.vpc_id
+  vpc_id      = var.sagemaker_domain_vpc_id
 
   tags = {
-    Name = "vpcendpoint-${var.name}-sg"
+    Name = "vpcendpoint-${var.sagemaker_domain_name}-sg"
   }
 }
 
@@ -80,10 +76,11 @@ resource "aws_security_group_rule" "fromvpc" {
   protocol    = "ALL"
   to_port     = -1
   from_port   = -1
-  cidr_block  = cidrsubnet(data.aws_vpc.selected.cidr_block, 4, 1)
+  cidr_blocks  = [cidrsubnet(data.aws_vpc.selected.cidr_block, 4, 1)]
+  security_group_id = aws_security_group.vpcendpoint.id
 }
 
-resource "aws_security_group_rule" "egress" {
+resource "aws_security_group_rule" "egressvpcendpoint" {
   description       = "Traffic to internet"
   type              = "egress"
   from_port         = 0

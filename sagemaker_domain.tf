@@ -10,7 +10,7 @@ resource "aws_sagemaker_domain" "domain" {
   subnet_ids  = var.sagemaker_domain_subnet_ids
 
   default_user_settings {
-    security_groups = aws_security_group.sagemakerstudio.id
+    security_groups = [aws_security_group.sagemakerstudio.id]
     execution_role  = aws_iam_role.execution_role.arn
   }
 }
@@ -33,12 +33,12 @@ data "aws_iam_policy_document" "execution_role_policy" {
 }
 
 resource "aws_security_group" "sagemakerstudio" {
-  name        = "sagemakerstudio-${var.name}-sg"
+  name        = "sagemakerstudio-${var.sagemaker_domain_name}-sg"
   description = "SG for Sagemaker Studio"
   vpc_id      = var.sagemaker_domain_vpc_id
 
   tags = {
-    Name = "sagemakerstudio-${var.name}-sg"
+    Name = "sagemakerstudio-${var.sagemaker_domain_name}-sg"
   }
 }
 
@@ -57,8 +57,9 @@ resource "aws_security_group_rule" "ip_allowlist" {
   protocol    = "TCP"
   to_port     = 2049
   from_port   = 2049
-  cidr_block  = cidrsubnet(data.aws_vpc.selected.cidr_block, 4, 1)
-  #security_group_id = aws_security_group.sftp_sg.id
+  cidr_blocks  = [cidrsubnet(data.aws_vpc.selected.cidr_block, 4, 1)]
+  security_group_id = aws_security_group.sagemakerstudio.id
+
 }
 
 resource "aws_security_group_rule" "egress" {
