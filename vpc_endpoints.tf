@@ -24,23 +24,20 @@ resource "aws_vpc_endpoint" "sagemaker_runtime" {
   private_dns_enabled = true
 }
 
-resource "aws_vpc_endpoint" "cloudwatch_logs" {
-  vpc_id            = var.sagemaker_domain_vpc_id
-  service_name      = "com.amazonaws.${data.aws_region.current.name}.logs"
-  vpc_endpoint_type = "Interface"
+#resource "aws_vpc_endpoint" "cloudwatch_logs" {
+#  vpc_id            = var.sagemaker_domain_vpc_id
+#  service_name      = "com.amazonaws.${data.aws_region.current.name}.logs"
+#  vpc_endpoint_type = "Interface"
 
-  security_group_ids = [
-    aws_security_group.vpcendpoint.id,
-  ]
+#  security_group_ids = [
+#    aws_security_group.vpcendpoint.id,
+#  ]
 
-  subnet_ids          = var.sagemaker_domain_subnet_ids
-  private_dns_enabled = true
+#  subnet_ids          = var.sagemaker_domain_subnet_ids
+#  private_dns_enabled = true
 }
 
-resource "aws_vpc_endpoint" "s3" {
-  vpc_id       = var.sagemaker_domain_vpc_id
-  service_name = "com.amazonaws.${data.aws_region.current.name}.s3"
-}
+##S3 VPC Endpoint is already created by stack https://github.com/DNXLabs/terraform-aws-network/
 
 resource "aws_security_group" "vpcendpoint" {
   name        = "vpcendpoint-${var.sagemaker_domain_name}-sg"
@@ -58,6 +55,7 @@ resource "aws_security_group_rule" "fromvpcendpoint" {
   protocol          = "ALL"
   to_port           = -1
   from_port         = -1
+  source_security_group_id       = aws_security_group.vpcendpoint.id
   security_group_id = aws_security_group.vpcendpoint.id
 }
 
@@ -67,6 +65,7 @@ resource "aws_security_group_rule" "fromsagemaker" {
   protocol          = "ALL"
   to_port           = -1
   from_port         = -1
+  source_security_group_id = aws_security_group.sagemakerstudio.id
   security_group_id = aws_security_group.sagemakerstudio.id
 }
 

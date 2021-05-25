@@ -42,12 +42,13 @@ resource "aws_security_group" "sagemakerstudio" {
   }
 }
 
-resource "aws_security_group_rule" "SagemakerStudioSG" {
+resource "aws_security_group_rule" "sagemakerstudiosg" {
   description       = "Allow all traffic from Sagemaker Studio"
   type              = "ingress"
   protocol          = "ALL"
   to_port           = -1
   from_port         = -1
+  source_security_group_id = aws_security_group.sagemakerstudio.id
   security_group_id = aws_security_group.sagemakerstudio.id
 }
 
