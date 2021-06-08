@@ -40,13 +40,13 @@ resource "aws_security_group" "vpcendpoint" {
 }
 
 resource "aws_security_group_rule" "fromvpcendpoint" {
-  description       = "Allow all traffic"
-  type              = "ingress"
-  protocol          = "ALL"
-  to_port           = -1
-  from_port         = -1
-  source_security_group_id       = aws_security_group.vpcendpoint.id
-  security_group_id = aws_security_group.vpcendpoint.id
+  description              = "Allow all traffic"
+  type                     = "ingress"
+  protocol                 = "ALL"
+  to_port                  = -1
+  from_port                = -1
+  source_security_group_id = aws_security_group.vpcendpoint.id
+  security_group_id        = aws_security_group.vpcendpoint.id
 }
 
 ##resource "aws_security_group_rule" "fromsagemaker" {
@@ -60,12 +60,12 @@ resource "aws_security_group_rule" "fromvpcendpoint" {
 #}
 
 resource "aws_security_group_rule" "fromvpc" {
-  description = "Allow all traffic within VPC"
-  type        = "ingress"
-  protocol    = "ALL"
-  to_port     = -1
-  from_port   = -1
-  cidr_blocks  = [cidrsubnet(data.aws_vpc.selected.cidr_block, 4, 1)]
+  description       = "Allow all traffic within VPC"
+  type              = "ingress"
+  protocol          = "ALL"
+  to_port           = -1
+  from_port         = -1
+  cidr_blocks       = [cidrsubnet(data.aws_vpc.selected.cidr_block, 4, 1)]
   security_group_id = aws_security_group.vpcendpoint.id
 }
 

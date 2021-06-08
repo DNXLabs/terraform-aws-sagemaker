@@ -4,10 +4,10 @@ data "aws_vpc" "selected" {
 
 resource "aws_sagemaker_domain" "domain" {
 
-  domain_name = var.sagemaker_domain_name
-  auth_mode   = var.sagemaker_domain_auth_mode
-  vpc_id      = var.sagemaker_domain_vpc_id
-  subnet_ids  = var.sagemaker_domain_subnet_ids
+  domain_name             = var.sagemaker_domain_name
+  auth_mode               = var.sagemaker_domain_auth_mode
+  vpc_id                  = var.sagemaker_domain_vpc_id
+  subnet_ids              = var.sagemaker_domain_subnet_ids
   app_network_access_type = var.app_network_access_type
 
   default_user_settings {
@@ -50,22 +50,22 @@ resource "aws_security_group" "sagemakerstudio" {
 }
 
 resource "aws_security_group_rule" "sagemakerstudiosg" {
-  description       = "Allow all traffic from Sagemaker Studio"
-  type              = "ingress"
-  protocol          = "ALL"
-  to_port           = -1
-  from_port         = -1
+  description              = "Allow all traffic from Sagemaker Studio"
+  type                     = "ingress"
+  protocol                 = "ALL"
+  to_port                  = -1
+  from_port                = -1
   source_security_group_id = aws_security_group.sagemakerstudio.id
-  security_group_id = aws_security_group.sagemakerstudio.id
+  security_group_id        = aws_security_group.sagemakerstudio.id
 }
 
 resource "aws_security_group_rule" "ip_allowlist" {
-  description = "NFS traffic over TCP on port 2049 between the domain and the Amazon EFS volume"
-  type        = "ingress"
-  protocol    = "TCP"
-  to_port     = 2049
-  from_port   = 2049
-  cidr_blocks  = [cidrsubnet(data.aws_vpc.selected.cidr_block, 4, 1)]
+  description       = "NFS traffic over TCP on port 2049 between the domain and the Amazon EFS volume"
+  type              = "ingress"
+  protocol          = "TCP"
+  to_port           = 2049
+  from_port         = 2049
+  cidr_blocks       = [cidrsubnet(data.aws_vpc.selected.cidr_block, 4, 1)]
   security_group_id = aws_security_group.sagemakerstudio.id
 
 }
