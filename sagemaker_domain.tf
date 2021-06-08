@@ -8,6 +8,7 @@ resource "aws_sagemaker_domain" "domain" {
   auth_mode   = var.sagemaker_domain_auth_mode
   vpc_id      = var.sagemaker_domain_vpc_id
   subnet_ids  = var.sagemaker_domain_subnet_ids
+  app_network_access_type = var.app_network_access_type
 
   default_user_settings {
     security_groups = [aws_security_group.sagemakerstudio.id]
@@ -16,8 +17,8 @@ resource "aws_sagemaker_domain" "domain" {
 }
 
 resource "aws_iam_role" "execution_role" {
-  name               = "sagemaker_execution_role"
-  path               = "/"
+  name               = "sagemaker-execution-role-${var.sagemaker_domain_name}"
+  path               = "/service-role/"
   assume_role_policy = data.aws_iam_policy_document.execution_role_policy.json
 }
 
@@ -32,9 +33,15 @@ data "aws_iam_policy_document" "execution_role_policy" {
   }
 }
 
+resource "aws_iam_role_policy_attachment" "managed_policies" {
+
+  role       = aws_iam_role.execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
+}
+
 resource "aws_security_group" "sagemakerstudio" {
   name        = "sagemakerstudio-${var.sagemaker_domain_name}-sg"
-  description = "SG for Sagemaker Studio"
+  description = "SagemakerStudioSG"
   vpc_id      = var.sagemaker_domain_vpc_id
 
   tags = {

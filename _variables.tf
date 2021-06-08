@@ -15,3 +15,9 @@ variable "sagemaker_domain_subnet_ids" {
   type        = list(string)
   description = "The VPC subnets that Studio uses for communication"
 }
+
+variable "app_network_access_type" {
+  type  = string
+  default = "PublicInternetOnly"
+  description = "Specifies the VPC used for non-EFS traffic. The default value is PublicInternetOnly. Valid values are PublicInternetOnly and VpcOnly."
+}
