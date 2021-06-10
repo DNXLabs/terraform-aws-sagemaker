@@ -65,7 +65,7 @@ resource "aws_security_group_rule" "ip_allowlist" {
   protocol          = "TCP"
   to_port           = 2049
   from_port         = 2049
-  cidr_blocks       = [cidrsubnet(data.aws_vpc.selected.cidr_block, 4, 1)]
+  cidr_blocks       = [data.aws_vpc.selected.cidr_block]
   security_group_id = aws_security_group.sagemakerstudio.id
 
 }

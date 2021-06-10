@@ -65,7 +65,7 @@ resource "aws_security_group_rule" "fromvpc" {
   protocol          = "ALL"
   to_port           = -1
   from_port         = -1
-  cidr_blocks       = [cidrsubnet(data.aws_vpc.selected.cidr_block, 4, 1)]
+  cidr_blocks       = [data.aws_vpc.selected.cidr_block]
   security_group_id = aws_security_group.vpcendpoint.id
 }
 
