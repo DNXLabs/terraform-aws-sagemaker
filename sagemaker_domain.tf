@@ -30,6 +30,11 @@ data "aws_iam_policy_document" "execution_role_policy" {
       type        = "Service"
       identifiers = ["sagemaker.amazonaws.com"]
     }
+
+    principals {
+      type        = "Service"
+      identifiers = ["s3.amazonaws.com"]
+    }
   }
 }
 
