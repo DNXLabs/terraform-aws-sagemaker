@@ -29,7 +29,11 @@
 
 ## Outputs
 
-No output.
+| Name | Description |
+|------|-------------|
+| sagemaker\_role\_arn | n/a |
+| sagemaker\_role\_name | n/a |
+| sagemaker\_security\_group | n/a |
 
 <!--- END_TF_DOCS --->
 
