@@ -21,3 +21,8 @@ variable "app_network_access_type" {
   default     = "PublicInternetOnly"
   description = "Specifies the VPC used for non-EFS traffic. The default value is PublicInternetOnly. Valid values are PublicInternetOnly and VpcOnly."
 }
+
+variable "kms_key_id" {
+  type        = string
+  description = "The AWS KMS customer managed CMK used to encrypt the EFS volume attached to the domain."
+}
