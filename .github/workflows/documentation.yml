@@ -5,6 +5,9 @@ on:
     branches:
       - master
 
+permissions: read-all
+
+
 jobs:
   docs:
     runs-on: ubuntu-latest
