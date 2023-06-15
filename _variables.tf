@@ -24,5 +24,6 @@ variable "app_network_access_type" {
 
 variable "kms_key_id" {
   type        = string
+  default     = null
   description = "The AWS KMS customer managed CMK used to encrypt the EFS volume attached to the domain."
 }
