@@ -9,6 +9,7 @@ resource "aws_sagemaker_domain" "domain" {
   vpc_id                  = var.sagemaker_domain_vpc_id
   subnet_ids              = var.sagemaker_domain_subnet_ids
   app_network_access_type = var.app_network_access_type
+  kms_key_id              = var.kms_key_id
 
   default_user_settings {
     security_groups = [aws_security_group.sagemakerstudio.id]
